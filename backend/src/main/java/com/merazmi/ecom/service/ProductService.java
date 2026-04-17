@@ -1,5 +1,6 @@
 package com.merazmi.ecom.service;
 
+import com.merazmi.ecom.dtos.CreateProductRequest;
 import com.merazmi.ecom.model.Product;
 import com.merazmi.ecom.repo.ProductRepo;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,22 @@ public class ProductService {
 
     public Optional<Product> findById(int id) {
         return repo.findById(id);
+    }
+
+    public Product create(CreateProductRequest productRequest) {
+        Product product = new Product();
+        product.setName(productRequest.name());
+        product.setPrice(productRequest.price());
+        product.setDescription(productRequest.description());
+        product.setCategory(productRequest.category());
+        product.setBrand(productRequest.brand());
+        if (productRequest.isAvailable() != null) {
+            product.setAvailable(productRequest.isAvailable());
+        }
+        if (productRequest.quantity() != null) {
+            product.setQuantity(productRequest.quantity());
+        }
+        return repo.save(product);
     }
 
     public int seed() {

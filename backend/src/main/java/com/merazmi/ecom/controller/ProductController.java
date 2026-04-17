@@ -1,11 +1,13 @@
 package com.merazmi.ecom.controller;
 
+import com.merazmi.ecom.dtos.CreateProductRequest;
 import com.merazmi.ecom.dtos.ProductResponse;
 import com.merazmi.ecom.dtos.ProductSeedingResponse;
 import com.merazmi.ecom.dtos.ProductsResponse;
 import com.merazmi.ecom.model.Product;
 import com.merazmi.ecom.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,12 @@ public class ProductController {
         return product
                 .map(value -> ResponseEntity.ok(new ProductResponse("Success", value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest productBody) {
+        Product product = productService.create(productBody);
+        return new ResponseEntity(new ProductResponse("Created", product), HttpStatus.CREATED);
     }
 
     @PostMapping("seed")

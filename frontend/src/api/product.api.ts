@@ -12,6 +12,14 @@ export type Product = {
   releaseAt: string
 }
 
+export type ProductPayload = {
+  brand: string
+  category: string
+  description: string
+  name: string
+  price: number
+}
+
 export type ProductsResponse = {
   message: string
   total: number
@@ -30,8 +38,12 @@ export const productApi = {
   },
 
   getById: async (id: number): Promise<ProductResponse> => {
-    console.log(id)
     const res = await api.get(`/products/${id}`)
+    return res.data
+  },
+
+  create: async (payload: ProductPayload) => {
+    const res = await api.post('/products', payload)
     return res.data
   },
 }
