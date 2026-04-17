@@ -1,6 +1,6 @@
+import type { Product } from '#/api/product.api'
 import { createContext, useContext, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { Product } from '../data/products'
 
 export interface CartItem extends Product {
   quantity: number
@@ -9,8 +9,8 @@ export interface CartItem extends Product {
 interface CartContextType {
   items: CartItem[]
   addToCart: (product: Product) => void
-  removeFromCart: (productId: string) => void
-  updateQuantity: (productId: string, quantity: number) => void
+  removeFromCart: (productId: number) => void
+  updateQuantity: (productId: number, quantity: number) => void
   clearCart: () => void
   totalItems: number
   totalPrice: number
@@ -39,13 +39,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsCartOpen(true)
   }
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (productId: number) => {
     setItems((currentItems) =>
       currentItems.filter((item) => item.id !== productId),
     )
   }
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productId: number, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId)
       return
